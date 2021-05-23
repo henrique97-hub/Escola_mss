@@ -12,7 +12,7 @@ const funcoes = {
         const notasMedias = new compararPorNotas[aluno.notasTurmaId]
         const notasComparadas = JSON.stringify(notasParaComparar) === JSON.stringify(notasMedias)
         notasComparadas.status = aluno.status;
-        axios.post('http://192.168.0.6:10000/eventos'),{
+        axios.post('http://localhost:10000/eventos'),{
             tipo: "NotasAtualizada",
             dados: {
                 id: aluno.id,
