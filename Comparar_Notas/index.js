@@ -8,15 +8,17 @@ const compararPorNotas = {};
 const funcoes = {
     NotasComparadas:(aluno)=>{
         const notasAlunos = compararPorNotas[aluno.notasId];
-        const notasParaComparar = notasAlunos.find((o) => o.id === aluno.notasTurmaId);
-        notasParaComparar.status = aluno.status;
+        const notasParaComparar = notasAlunos.find((o) => o.id === aluno.id);
+        const notasMedias = new compararPorNotas[aluno.notasTurmaId]
+        const notasComparadas = JSON.stringify(notasParaComparar) === JSON.stringify(notasMedias)
+        notasComparadas.status = aluno.status;
         axios.post('http://192.168.0.6:10000/eventos'),{
             tipo: "NotasAtualizada",
             dados: {
                 id: aluno.id,
                 texto: aluno.texto,
                 notasparciasId: aluno.notasId,
-                notasmediaTurmaID: aluno.notasTurmaId,
+                notasmediaTurmaId: aluno.notasTurmaId,
                 status: aluno.status
             }
         }
@@ -24,7 +26,7 @@ const funcoes = {
 }
 
 
-app.get('/notas/:id/Comparar_Notas',(req,res)=>{
+app.get('/Notas/:id/Comparar_Notas',(req,res)=>{
     res.send(compararPorNotas[req.params.id] || []);
 
 });
