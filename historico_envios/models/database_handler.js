@@ -3,15 +3,13 @@ var mysql = require('mysql');
 
 var con = mysql.createConnection({
   host: "localhost",
-  user: "yourusername",
-  password: "yourpassword"
+  user: "user",
+  password: "pass",
+  database: "trabalhodb"
 });
 
 con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  con.query("CREATE DATABASE trabalhodb", function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
+  con.query("SELECT * FROM trabalhotest", function (err, result, fields) {
+    console.log(result);
   });
 });
