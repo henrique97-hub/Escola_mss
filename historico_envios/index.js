@@ -1,12 +1,11 @@
 const express = require ('express');
 const axios = require('axios');
 const app = express();
+const { v4: uuidv4} = require('uuid');
 app.use(express.json());
 
 
-const funcoes = {
-
-}
+const trabalhos = {};
 
 // Todo.: Function that returns all works
 // Todo.: Function that returns all works per id
@@ -54,7 +53,12 @@ app.post('/professor/novotrabalho/',(req,res)=>{
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
-    res.send("Insert whole new updated json here");
+    const idObs = uuidv4();
+    const { texto } = req.body;
+    const trabalhoput = trabalhos[req.params.id] || [];
+    trabalhoput.push({id: idObs, texto});
+    trabalho[req.params.id] = trabalhoput;
+    res.status(201).send(trabalhoput);
 });
 
 
