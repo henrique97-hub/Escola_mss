@@ -1,16 +1,21 @@
+// Libs
 const express = require ('express');
 const axios = require('axios');
 const app = express();
 const { v4: uuidv4} = require('uuid');
 app.use(express.json());
 
-// var with all work (?)
-const trabalhos = [];
-
+// Functions
 // Todo.: Function that returns all works
 // Todo.: Function that returns all works per id
 // Todo.: Function that segregates per period.
 
+// Vars
+// var with all work (?)
+const trabalhos = [];
+
+
+// Microservices ports
 app.get('/aluno/ano/:id',(req,res)=>{
     res.send(req.params.id);
 });
@@ -50,8 +55,7 @@ app.get('/professor/todos/bimestre',(req,res)=>{
 // TODO.: Make proper post
 app.post('/professor/novotrabalho/',(req,res)=>{
     console.log("req.body - post.: ", req.body);
-    console.log("json stringify.: ", JSON.stringify(req.body.query));
-    const assistant = JSON.stringify(req.body.query);
+    const assistant = JSON.stringify(req.body);
     const idObs = uuidv4();
     const { texto } = req.body;
     trabalhos.push({id: idObs,  assistant});
