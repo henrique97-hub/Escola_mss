@@ -48,9 +48,34 @@ function updateWork(requestbody){
     var trabalho = requestbody[0];
     var responsebody = {"status":0, "result":{}};
     var position = get_trabalho_by_uuid(trabalho);
+
+    console.log("Before is");
     
     if (is_trabalho_present(position)){
+        
+        var trabalhofound = trabalhosarray[position].trabalho;
+
+        if (is_alunoid_present(trabalho)){
+            trabalhofound.aluno_id = trabalho.aluno_id;
+        }
+
+        if (is_dataentregue_present(trabalho)){
+            trabalhofound.data_entregue = fix_dataentregue(trabalho);
+        }
+
+        if (is_nota_present(trabalho)){
+            trabalhofound.nota = trabalho.nota;
+        }
+
+        if (is_nome_present(trabalho)){
+            trabalhofound.nome = trabalho.nome;
+        }
+
+        console.log(trabalhosarray[position]);
+        trabalhosarray[position].trabalho = trabalhofound;
         responsebody.status = 202;
+        responsebody.result.message = "Trabalho updated.";
+        responsebody.result.data = {trabalhofound};
         
     } else {
         responsebody.status = 404;
@@ -91,6 +116,10 @@ function is_dataentregue_present(trabalho){
 
 function is_nota_present(trabalho){
     return ((trabalho.nota != undefined) ? true : false);
+}
+
+function is_nome_present(trabalho){
+    return ((trabalho.nome != undefined) ? true : false);
 }
 
 // Microservices ports
@@ -137,8 +166,8 @@ app.post('/professor/novotrabalho/',(req,res)=>{
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
-    updateWork(req.body);
-    res.status(201).send(trabalhosarray);
+    var response = updateWork(req.body);
+    res.status(response.status).send(response.result);
 });
 
 
