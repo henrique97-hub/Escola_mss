@@ -5,10 +5,15 @@ const app = express();
 const { v4: uuidv4} = require('uuid');
 app.use(express.json());
 
+// Vars
+// var with all work (?)
+const trabalhosarray = [];
+
 // Functions
 // Todo.: Function that returns all works
 // Todo.: Function that returns all works per id
 // Todo.: Function that segregates per period.
+
 
 function newWork(requestbody){
     console.log("New work received.");
@@ -17,7 +22,7 @@ function newWork(requestbody){
     var responsebody = {"status":0, "result":{}};
     
     // Default grade to 0, if not present.
-    if (!is_nota_not_present(trabalho)) {
+    if (!is_nota_present(trabalho)) {
         trabalho.nota = 0;
     }
 
@@ -25,11 +30,11 @@ function newWork(requestbody){
     trabalho.data_entregue = fix_dataentregue(trabalho);
 
     // If aluno_id missing, return error.
-    if (!is_alunoid_not_present(trabalho)){
+    if (is_alunoid_present(trabalho)){
         responsebody.status = 201;
         responsebody.result.message = `New entry created. id.: ${idObs}`;
-        responsebody.result.trabalho = trabalho;
-        trabalhos.push({id: idObs,  trabalho});
+        responsebody.result.data = {id: idObs,  trabalho};
+        trabalhosarray.push({id: idObs,  trabalho});
     } else {
         responsebody.status = 400;
         responsebody.result.message = "Missing aluno_id in json request.";
@@ -38,32 +43,55 @@ function newWork(requestbody){
     return responsebody
 };
 
+function updateWork(requestbody){
+    console.log("update work received.");
+    var trabalho = requestbody[0];
+    var responsebody = {"status":0, "result":{}};
+    var position = get_trabalho_by_uuid(trabalho);
+    
+    if (is_trabalho_present(position)){
+        responsebody.status = 202;
+        
+    } else {
+        responsebody.status = 404;
+        responsebody.result.message = "Trabalho not found";
+    }
 
+    return responsebody
+};
+
+function get_trabalho_by_uuid(trabalho){
+    for (let i = 0; i < trabalhosarray.length; i++) {
+        if (trabalhosarray[i].id == trabalho.id){
+            console.log("Trabalho found.");
+            return i;
+        }
+    }
+}
 
 function fix_dataentregue(trabalho){
-    if (is_dataentregue_not_present(trabalho)) {
+    if (!is_dataentregue_present(trabalho)) {
         return new Date()
     } else {
         return new Date(trabalho.data_entregue);
     }
 }
 
-function is_alunoid_not_present(trabalho){
-    return ((trabalho.aluno_id == undefined) ? true : false);
+function is_trabalho_present(position){
+    return ((position != undefined) ? true : false);
 }
 
-function is_dataentregue_not_present(trabalho){
-    return ((trabalho.data_entregue == undefined) ? true : false);
+function is_alunoid_present(trabalho){
+    return ((trabalho.aluno_id != undefined) ? true : false);
 }
 
-function is_nota_not_present(trabalho){
-    return ((trabalho.nota == undefined) ? true : false);
+function is_dataentregue_present(trabalho){
+    return ((trabalho.data_entregue != undefined) ? true : false);
 }
 
-// Vars
-// var with all work (?)
-const trabalhos = [];
-
+function is_nota_present(trabalho){
+    return ((trabalho.nota != undefined) ? true : false);
+}
 
 // Microservices ports
 app.get('/aluno/ano/:id',(req,res)=>{
@@ -92,7 +120,7 @@ app.get('/professor/bimestre/:id',(req,res)=>{
 });
 
 app.get('/professor/todos/ano',(req,res)=>{
-    res.send("Insert whole year json here");
+    res.status(201).send(trabalhosarray);
 });
 
 app.get('/professor/todos/semestre',(req,res)=>{
@@ -109,12 +137,8 @@ app.post('/professor/novotrabalho/',(req,res)=>{
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
-    const idObs = uuidv4();
-    const { texto } = req.body;
-    const trabalhoput = trabalhos[req.params.id] || [];
-    trabalhoput.push({id: idObs, texto});
-    trabalho[req.params.id] = trabalhoput;
-    res.status(201).send(trabalhoput);
+    updateWork(req.body);
+    res.status(201).send(trabalhosarray);
 });
 
 
