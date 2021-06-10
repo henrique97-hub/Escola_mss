@@ -10,6 +10,16 @@ app.use(express.json());
 // Todo.: Function that returns all works per id
 // Todo.: Function that segregates per period.
 
+// Todo.: Add logic. If values missing, return error with details of error.
+function newWork(requestbody){
+    console.log("New work received.");
+    const idObs = uuidv4();
+    console.log("Request Body.: ", requestbody[0]);
+    const trabalho = requestbody[0];
+    trabalhos.push({id: idObs,  trabalho});
+    return trabalhos
+};
+
 // Vars
 // var with all work (?)
 const trabalhos = [];
@@ -54,12 +64,7 @@ app.get('/professor/todos/bimestre',(req,res)=>{
 });
 // TODO.: Make proper post
 app.post('/professor/novotrabalho/',(req,res)=>{
-    console.log("req.body - post.: ", req.body);
-    const assistant = JSON.stringify(req.body);
-    const idObs = uuidv4();
-    const { texto } = req.body;
-    trabalhos.push({id: idObs,  assistant});
-    res.status(201).send(trabalhos);
+    res.status(201).send(newWork(req.body));
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
