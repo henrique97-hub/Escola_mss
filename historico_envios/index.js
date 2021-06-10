@@ -4,8 +4,8 @@ const app = express();
 const { v4: uuidv4} = require('uuid');
 app.use(express.json());
 
-
-const trabalhos = {};
+// var with all work (?)
+const trabalhos = [];
 
 // Todo.: Function that returns all works
 // Todo.: Function that returns all works per id
@@ -49,7 +49,13 @@ app.get('/professor/todos/bimestre',(req,res)=>{
 });
 // TODO.: Make proper post
 app.post('/professor/novotrabalho/',(req,res)=>{
-    res.send("Insert whole new work json here");
+    console.log("req.body - post.: ", req.body);
+    console.log("json stringify.: ", JSON.stringify(req.body.query));
+    const assistant = JSON.stringify(req.body.query);
+    const idObs = uuidv4();
+    const { texto } = req.body;
+    trabalhos.push({id: idObs,  assistant});
+    res.status(201).send(trabalhos);
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
