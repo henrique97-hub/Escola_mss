@@ -10,15 +10,14 @@ app.use(express.json());
 // Todo.: Function that returns all works per id
 // Todo.: Function that segregates per period.
 
-// Todo.: Add logic. If values missing, return error with details of error.
 function newWork(requestbody){
     console.log("New work received.");
-    const idObs = uuidv4();
-    const trabalho = requestbody[0];
-    const responsebody = {"status":0, "result":""};
+    var idObs = uuidv4();
+    var trabalho = requestbody[0];
+    var responsebody = {"status":0, "result":{}};
     
     // Default grade to 0, if not present.
-    if (is_nota_not_present(trabalho)) {
+    if (!is_nota_not_present(trabalho)) {
         trabalho.nota = 0;
     }
 
@@ -26,13 +25,14 @@ function newWork(requestbody){
     trabalho.data_entregue = fix_dataentregue(trabalho);
 
     // If aluno_id missing, return error.
-    if (is_alunoid_not_present(trabalho)){
+    if (!is_alunoid_not_present(trabalho)){
         responsebody.status = 201;
-        responsebody.result = `New entry created. id.: ${idObs}`;
+        responsebody.result.message = `New entry created. id.: ${idObs}`;
+        responsebody.result.trabalho = trabalho;
         trabalhos.push({id: idObs,  trabalho});
     } else {
         responsebody.status = 400;
-        responsebody.result = "Missing aluno_id in json request.";
+        responsebody.result.message = "Missing aluno_id in json request.";
     }
 
     return responsebody
@@ -57,7 +57,7 @@ function is_dataentregue_not_present(trabalho){
 }
 
 function is_nota_not_present(trabalho){
-    return ((trabalho.nota != undefined) ? true : false);
+    return ((trabalho.nota == undefined) ? true : false);
 }
 
 // Vars
@@ -104,8 +104,8 @@ app.get('/professor/todos/bimestre',(req,res)=>{
 });
 // TODO.: Make proper post
 app.post('/professor/novotrabalho/',(req,res)=>{
-    const response = newWork(req.body);
-    res.status(response.status).send(newWork(response.result));
+    var response = newWork(req.body);
+    res.status(response.status).send(response.result);
 });
 // TODO.: Make proper put
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
