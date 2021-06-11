@@ -97,18 +97,13 @@ function get_by_semestre(filtro){
             response[position][count] = element;
         });
     } else {
-        trabalhosarray.forEach(element => {
-            console.log(count);
-            if (element.trabalho.aluno_id == filtro){
-                if (element.trabalho.data_entregue.getMonth() > 6){
-                    count = Object.keys(response[1]).length;
-                    response[1][count] = element;
-                } else {
-                    count = Object.keys(response[0]).length;
-                    response[0][count] = element;
-                }
-            }
-        });
+        if (element.trabalho.aluno_id == filtro){
+            trabalhosarray.forEach(element => {
+                position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 6);
+                count = Object.keys(response[position]).length;
+                response[position][count] = element;
+            });
+        }
     }
     responsebody.status = 200;
     responsebody.result = response;
@@ -117,28 +112,26 @@ function get_by_semestre(filtro){
 
 function get_by_bimestre(filtro){
     var count = 0;
-    var local = 0;
     var response = {0:{}, 1:{}, 2:{}, 3:{}, 4:{}, 5:{}};
     var responsebody = {"status":0, "result":{}};
+    var position = 0;
     
-
     if (filtro == false) {
         trabalhosarray.forEach(element => {
-            local = Math.ceil(element.trabalho.data_entregue.getMonth()/2) - 1;
-            console.log(local);
-            console.log(count);
-            if (element.trabalho.data_entregue.getMonth() > 6){
-                count = Object.keys(response[1]).length;
-                response[1][count] = element;
-            } else {
-                count = Object.keys(response[0]).length;
-                response[0][count] = element;
-            }
+            position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 2);
+            count = Object.keys(response[position]).length;
+            response[position][count] = element;
         });
-        
     } else {
-        
+        if (element.trabalho.aluno_id == filtro){
+            trabalhosarray.forEach(element => {
+                position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 2);
+                count = Object.keys(response[position]).length;
+                response[position][count] = element;
+            });
+        }
     }
+
     responsebody.status = 200;
     responsebody.result = response;
     return responsebody;
@@ -154,7 +147,11 @@ function get_trabalho_by_uuid(trabalho){
 }
 
 function get_month_array_position(month, type){
-    return Math.ceil(month/type) - 1;
+    if (month%2 == 0) {
+        return Math.ceil((month)/type);
+    } else {
+        return Math.ceil((month)/type) - 1;
+    }
 }
 
 function fix_dataentregue(trabalho){
@@ -223,7 +220,8 @@ app.get('/professor/todos/semestre',(req,res)=>{
 });
 
 app.get('/professor/todos/bimestre',(req,res)=>{
-    res.send("Insert whole bimester json here");
+    var response = get_by_bimestre(false);
+    res.status(response.status).send(response.result);
 });
 
 app.post('/professor/novotrabalho/',(req,res)=>{
