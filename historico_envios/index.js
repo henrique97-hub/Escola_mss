@@ -271,7 +271,7 @@ app.post('/professor/novotrabalho/',(req,res)=>{
     res.status(response.status).send(response.result);
 });
 
-app.put('/professor/updatetrabalho/:id',(req,res)=>{
+app.put('/professor/updatetrabalho/',(req,res)=>{
     var response = updateWork(req.body);
     res.status(response.status).send(response.result);
 });
