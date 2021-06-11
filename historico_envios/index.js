@@ -87,18 +87,14 @@ function get_by_semestre(filtro){
     var count = 0;
     var response = {0:{}, 1:{}};
     var responsebody = {"status":0, "result":{}};
+    var position = 0;
     
 
     if (filtro == false) {
         trabalhosarray.forEach(element => {
-            console.log(count);
-            if (element.trabalho.data_entregue.getMonth() > 6){
-                count = Object.keys(response[1]).length;
-                response[1][count] = element;
-            } else {
-                count = Object.keys(response[0]).length;
-                response[0][count] = element;
-            }
+            position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 6);
+            count = Object.keys(response[position]).length;
+            response[position][count] = element;
         });
     } else {
         trabalhosarray.forEach(element => {
@@ -119,6 +115,35 @@ function get_by_semestre(filtro){
     return responsebody;
 }
 
+function get_by_bimestre(filtro){
+    var count = 0;
+    var local = 0;
+    var response = {0:{}, 1:{}, 2:{}, 3:{}, 4:{}, 5:{}};
+    var responsebody = {"status":0, "result":{}};
+    
+
+    if (filtro == false) {
+        trabalhosarray.forEach(element => {
+            local = Math.ceil(element.trabalho.data_entregue.getMonth()/2) - 1;
+            console.log(local);
+            console.log(count);
+            if (element.trabalho.data_entregue.getMonth() > 6){
+                count = Object.keys(response[1]).length;
+                response[1][count] = element;
+            } else {
+                count = Object.keys(response[0]).length;
+                response[0][count] = element;
+            }
+        });
+        
+    } else {
+        
+    }
+    responsebody.status = 200;
+    responsebody.result = response;
+    return responsebody;
+}
+
 function get_trabalho_by_uuid(trabalho){
     for (let i = 0; i < trabalhosarray.length; i++) {
         if (trabalhosarray[i].id == trabalho.id){
@@ -126,6 +151,10 @@ function get_trabalho_by_uuid(trabalho){
             return i;
         }
     }
+}
+
+function get_month_array_position(month, type){
+    return Math.ceil(month/type) - 1;
 }
 
 function fix_dataentregue(trabalho){
