@@ -209,15 +209,30 @@ function is_nome_present(trabalho){
 
 // Microservices ports
 app.get('/aluno/ano/:id',(req,res)=>{
-    res.send(req.params.id);
+    if (req.params.id == undefined){
+        res.status(response.status).send("Error. Missing id.");
+    } else {
+        var response = get_by_year(req.params.id);
+        res.status(response.status).send(response.result);
+    }
 });
 
 app.get('/aluno/semestre/:id',(req,res)=>{
-    res.send(req.params.id);
+    if (req.params.id == undefined){
+        res.status(response.status).send("Error. Missing id.");
+    } else {
+        var response = get_by_semestre(req.params.id);
+        res.status(response.status).send(response.result);
+    }
 });
 
 app.get('/aluno/bimestre/:id',(req,res)=>{
-    res.send(req.params.id);
+    if (req.params.id == undefined){
+        res.status(response.status).send("Error. Missing id.");
+    } else {
+        var response = get_by_bimestre(req.params.id);
+        res.status(response.status).send(response.result);
+    }
 });
 
 app.get('/professor/ano/:id',(req,res)=>{
