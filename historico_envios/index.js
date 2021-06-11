@@ -97,13 +97,13 @@ function get_by_semestre(filtro){
             response[position][count] = element;
         });
     } else {
-        if (element.trabalho.aluno_id == filtro){
-            trabalhosarray.forEach(element => {
+        trabalhosarray.forEach(element => {
+            if (element.trabalho.aluno_id == filtro){
                 position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 6);
                 count = Object.keys(response[position]).length;
                 response[position][count] = element;
-            });
-        }
+            }
+        });
     }
     responsebody.status = 200;
     responsebody.result = response;
@@ -123,13 +123,38 @@ function get_by_bimestre(filtro){
             response[position][count] = element;
         });
     } else {
-        if (element.trabalho.aluno_id == filtro){
-            trabalhosarray.forEach(element => {
+        trabalhosarray.forEach(element => {
+            if (element.trabalho.aluno_id == filtro){
                 position = get_month_array_position(element.trabalho.data_entregue.getMonth(), 2);
                 count = Object.keys(response[position]).length;
                 response[position][count] = element;
-            });
-        }
+            }
+        });
+    }
+
+    responsebody.status = 200;
+    responsebody.result = response;
+    return responsebody;
+}
+
+function get_by_year(filtro){
+    var count = 0;
+    var response = {0:{}};
+    var responsebody = {"status":0, "result":{}};
+    var position = 0;
+    
+    if (filtro == false) {
+        trabalhosarray.forEach(element => {
+            count = Object.keys(response[0]).length;
+            response[0][count] = element;
+        });
+    } else {
+        trabalhosarray.forEach(element => {
+            if (element.trabalho.aluno_id == filtro){
+                count = Object.keys(response[position]).length;
+                response[0][count] = element;
+            }
+        });
     }
 
     responsebody.status = 200;
@@ -196,7 +221,8 @@ app.get('/aluno/bimestre/:id',(req,res)=>{
 });
 
 app.get('/professor/ano/:id',(req,res)=>{
-    res.send(req.params.id);
+    var response = get_by_year(req.params.id);
+    res.status(response.status).send(response.result);
 });
 
 
@@ -211,7 +237,8 @@ app.get('/professor/bimestre/:id',(req,res)=>{
 });
 
 app.get('/professor/todos/ano',(req,res)=>{
-    res.status(201).send(trabalhosarray);
+    var response = get_by_year(false);
+    res.status(response.status).send(response.result);
 });
 
 app.get('/professor/todos/semestre',(req,res)=>{
