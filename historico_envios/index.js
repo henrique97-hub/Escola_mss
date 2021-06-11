@@ -49,8 +49,6 @@ function updateWork(requestbody){
     var responsebody = {"status":0, "result":{}};
     var position = get_trabalho_by_uuid(trabalho);
 
-    console.log("Before is");
-    
     if (is_trabalho_present(position)){
         
         var trabalhofound = trabalhosarray[position].trabalho;
@@ -84,6 +82,42 @@ function updateWork(requestbody){
 
     return responsebody
 };
+
+function get_by_semestre(filtro){
+    var count = 0;
+    var response = {0:{}, 1:{}};
+    var responsebody = {"status":0, "result":{}};
+    
+
+    if (filtro == false) {
+        trabalhosarray.forEach(element => {
+            console.log(count);
+            if (element.trabalho.data_entregue.getMonth() > 6){
+                count = Object.keys(response[1]).length;
+                response[1][count] = element;
+            } else {
+                count = Object.keys(response[0]).length;
+                response[0][count] = element;
+            }
+        });
+    } else {
+        trabalhosarray.forEach(element => {
+            console.log(count);
+            if (element.trabalho.aluno_id == filtro){
+                if (element.trabalho.data_entregue.getMonth() > 6){
+                    count = Object.keys(response[1]).length;
+                    response[1][count] = element;
+                } else {
+                    count = Object.keys(response[0]).length;
+                    response[0][count] = element;
+                }
+            }
+        });
+    }
+    responsebody.status = 200;
+    responsebody.result = response;
+    return responsebody;
+}
 
 function get_trabalho_by_uuid(trabalho){
     for (let i = 0; i < trabalhosarray.length; i++) {
@@ -141,7 +175,9 @@ app.get('/professor/ano/:id',(req,res)=>{
 
 
 app.get('/professor/semestre/:id',(req,res)=>{
-    res.send(req.params.id);
+    var response = get_by_semestre(req.params.id);
+    
+    res.status(response.status).send(response.result);
 });
 
 app.get('/professor/bimestre/:id',(req,res)=>{
@@ -153,18 +189,19 @@ app.get('/professor/todos/ano',(req,res)=>{
 });
 
 app.get('/professor/todos/semestre',(req,res)=>{
-    res.send("Insert whole semester json here");
+    var response = get_by_semestre(false);
+    res.status(response.status).send(response.result);
 });
 
 app.get('/professor/todos/bimestre',(req,res)=>{
     res.send("Insert whole bimester json here");
 });
-// TODO.: Make proper post
+
 app.post('/professor/novotrabalho/',(req,res)=>{
     var response = newWork(req.body);
     res.status(response.status).send(response.result);
 });
-// TODO.: Make proper put
+
 app.put('/professor/updatetrabalho/:id',(req,res)=>{
     var response = updateWork(req.body);
     res.status(response.status).send(response.result);
