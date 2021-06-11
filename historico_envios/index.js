@@ -202,12 +202,12 @@ app.get('/professor/ano/:id',(req,res)=>{
 
 app.get('/professor/semestre/:id',(req,res)=>{
     var response = get_by_semestre(req.params.id);
-    
     res.status(response.status).send(response.result);
 });
 
 app.get('/professor/bimestre/:id',(req,res)=>{
-    res.send(req.params.id);
+    var response = get_by_bimestre(req.params.id);
+    res.status(response.status).send(response.result);
 });
 
 app.get('/professor/todos/ano',(req,res)=>{
