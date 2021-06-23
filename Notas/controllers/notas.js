@@ -20,13 +20,8 @@ module.exports = app => {
     app.put('/aluno/:id', (req, res) => {
         const id = parseInt(req.params.id)
         const valores = req.body
-        
+
         Aluno.alteraNotas(id, valores, res)
     })
 
-    app.delete('/aluno/:id', (req, res) => {
-        const id = parseInt(req.params.id)
-
-        Aluno.deleta(id, res)
-    })
 }
