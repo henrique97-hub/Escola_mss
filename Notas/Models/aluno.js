@@ -19,10 +19,8 @@ class Aluno {
 
     }
     alteraNotas(id, valores, res) {
-        if(valores.data) {
-            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
-        }      
-        const sql = 'UPDATE BancoDeNotas SET nota=? WHERE id=?'
+              
+        const sql = 'UPDATE BancoDeNotas SET ? WHERE id=?'
 
         conexao.query(sql, [valores, id], (erro, resultados) => {
             if(erro) {

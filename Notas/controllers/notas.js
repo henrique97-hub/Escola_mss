@@ -17,10 +17,10 @@ module.exports = app => {
        Aluno.adicionaAluno(aluno, res)
     }) 
 
-    app.patch('/aluno/:id', (req, res) => {
+    app.put('/aluno/:id', (req, res) => {
         const id = parseInt(req.params.id)
         const valores = req.body
-
+        
         Aluno.alteraNotas(id, valores, res)
     })
 
