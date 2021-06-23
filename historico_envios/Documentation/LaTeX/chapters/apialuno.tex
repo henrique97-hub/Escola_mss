@@ -1,0 +1,29 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{API - Aluno}
+
+\subsection{Path}
+localhost:1700/aluno/(requests)
+
+\subsection{GET}
+\subsubsection{/ano/\{aluno\_id\}}
+localhost:1700/aluno/ano/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos no ano onde aluno\_id\ é igual ao pedido. \newline
+
+\subsubsection{/semestre/\{aluno\_id\}}
+localhost:1700/aluno/semestre/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos, 2 arrays, 1 para cada semestre, onde aluno\_id\ é igual ao pedido \newline
+
+\subsubsection{/bimestre/\{aluno\_id\}}
+localhost:1700/aluno/bimestre/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos, 6 arrays, 1 para cada bimestre, onde aluno\_id\ é igual ao pedido. \newline
+
+
+\end{document}

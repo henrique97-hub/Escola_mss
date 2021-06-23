@@ -1,0 +1,63 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+\section{API - Professor}
+
+\subsection{Path}
+localhost:1700/professor/(requests)
+
+\subsection{GET}
+\subsubsection{/ano/\{aluno\_id\}}
+localhost:1700/professor/ano/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos no ano onde aluno\_id\ é igual ao pedido. \newline
+
+\subsubsection{/ano/todos}
+localhost:1700/professor/ano/todos \par
+
+Retorna json array de trabalhos no ano de todos os alunos no db. \newline
+
+\subsubsection{/semestre/\{aluno\_id\}}
+localhost:1700/professor/semestre/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos, 2 arrays, 1 para cada semestre, onde aluno\_id\ é igual ao pedido \newline
+
+\subsubsection{/semestre/todos}
+localhost:1700/professor/ano/todos \par
+
+Retorna json array de trabalhos, 2 arrays, 1 para cada semestre, de todos os alunos no db. \newline
+
+\subsubsection{/bimestre/\{aluno\_id\}}
+localhost:1700/professor/bimestre/\{aluno\_id\} \par
+
+Recebe aluno\_id\ \par
+Retorna json array de trabalhos, 6 arrays, 1 para cada bimestre, onde aluno\_id\ é igual ao pedido. \newline
+
+\subsubsection{/bimestre/todos}
+localhost:1700/professor/ano/todos \par
+
+Retorna json array de trabalhos, 6 arrays, 1 para cada bimestre, de todos os alunos no db. \newline
+
+\subsection{POST}
+
+\subsubsection{/novotrabalho/\{trabalho json\}}
+localhost:1700/professor/novotrabalho/\{trabalho json\} \par
+
+Recebe json de trabalho. \par 
+Cria um novo entry no db com as informações obtidas. \par
+Retorna ok se der certo. \newline
+
+\subsection{PUT}
+
+\subsubsection{/updatetrabalho/\{trabalho\_id\}/\{trabalho json\}}
+localhost:1700/professor/novotrabalho/\{trabalho\_id\}/\{trabalho json\} \par
+
+Recebe id de trabalho e novos dados. \par 
+Atualiza trabalho encontrado com o id. \par
+Retorna ok se der certo. \newline
+
+
+
+\end{document}
