@@ -2,15 +2,15 @@ const moment = require('moment')
 const conexao = require('../SQL/conexao')
 
 class CompararNotasAlunos {
-    NotasAtualizadas(id,nome,valores,resultados) {
+    NotasAtualizadas(res) {
         
-        const sql = 'SELECT nota FROM BancoDeNotas WHERE id LIKE=?'
+        const sql = 'SELECT nota,id FROM BancoDeNotas'
 
-        conexao.query(sql, [nome, id], (erro, resultados) => {
+        conexao.query(sql, (erro, resultados) => {
             if(erro) {
                 res.status(400).json(erro)
             } else {
-                res.status(200).json({...valores, id})
+                res.status(200).json(resultados)
             }
         })
     }
