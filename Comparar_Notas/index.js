@@ -9,7 +9,7 @@ const funcoes = {
     NotasComparadas:(aluno)=>{
         const notasAlunos = compararPorNotas[aluno.notasId];
         const notasParaComparar = notasAlunos.find((o) => o.id === aluno.id);
-        const calculoDaMedia = new CalculoMedia(id);
+        const calculoDaMedia = new calculo.CalculoMedia(id);
         //const notasMedias = new compararPorNotas[aluno.notasTurmaId]
         const notasComparadas = console.log("nota do aluno:", notasParaComparar + "nota media da turma:" , calculoDaMedia);
         notasComparadas.status = aluno.status;
@@ -61,6 +61,8 @@ const calculo = {
         return media;
     }
 }
+
+
 
 app.get('/Notas/:id/Comparar_Notas',(req,res)=>{
     res.send(compararPorNotas[req.params.id] || []);
