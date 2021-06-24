@@ -3,8 +3,8 @@ const conexao = require('../SQL/conexao')
 
 class VerNotas {
     visualizarNotas(id,nome,valores,resultados) {
-        // seleciona as notas pelo nome do aluno ou pelo id
-        const sql = 'SELECT nota FROM BancoDeNotas WHERE nome LIKE=? OR id LIKE=?'
+        
+        const sql = 'SELECT nota FROM BancoDeNotas WHERE id LIKE=?'
 
         conexao.query(sql, [nome, id], (erro, resultados) => {
             if(erro) {
