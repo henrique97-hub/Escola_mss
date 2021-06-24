@@ -51,11 +51,11 @@ const calculo = {
        }
     },
     CalculoMedia:(id)=>{
-        const notasmedias;
+        var notasMediasTurma;
         for(var i = 0; i <notas.length; i++){
-            notasmedias+= notas[i];
+            notasMediasTurma+= notas[i];
         }
-        media = notasmedias/id.length;
+        media = notasMediasTurma/id.length;
         return media;
     }
 }
