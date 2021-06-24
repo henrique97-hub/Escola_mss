@@ -10,13 +10,11 @@ const funcoes = {
         const notasAlunos = compararPorNotas[aluno.notasId];
         const notasParaComparar = notasAlunos.find((o) => o.id === aluno.id);
         const calculoDaMedia = new calculo.CalculoMedia(id);
-        //const notasMedias = new compararPorNotas[aluno.notasTurmaId]
         const notasComparadas = console.log("nota do aluno:", notasParaComparar + "nota media da turma:" , calculoDaMedia);
         notasComparadas.status = aluno.status;
         axios.post('http://localhost:10000/eventos'),{
             tipo: "NotasAtualizadas",
             dados: {
-                notasmediaTurmaId: aluno.notasTurmaId,
                 Aluno:[
                     {
                         id: aluno.id,
