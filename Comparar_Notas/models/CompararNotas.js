@@ -6,14 +6,18 @@ var listaNotaAlunos = [];
 var visualizacao = {"Sua Nota": 0, "Media da turma": 0} 
 
 class CompararNotas {
-    NotasAtualizadas(id, res) {
+    Comparacao(id, res) {
 
         const sql1 = `SELECT nota FROM bancoDeNotas WHERE id=${id}`
 
         var atendimento;
 
         conexao.query(sql1, (erro, resultados) => {
-            atendimento = resultados[0]
+            if(erro) {
+                res.status(400).json(erro)
+            } else {
+                atendimento = resultados[0]
+            }
         })
 
        

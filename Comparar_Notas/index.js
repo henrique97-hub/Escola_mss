@@ -30,7 +30,7 @@ function NotasComparadas(aluno){
 app.get('/Comparar_Notas/:id',(req,res)=>{
     const id = parseInt(req.params.id)
 
-    aluno.NotasAtualizadas(id, res)
+    aluno.Comparacao(id, res)
 });
 
 
