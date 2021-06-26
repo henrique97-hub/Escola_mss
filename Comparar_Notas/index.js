@@ -1,39 +1,38 @@
 const express = require ('express');
 const axios = require('axios');
+const aluno = require('./models/CompararNotas');
 const app = express();
 app.use(express.json());
 
 const compararPorNotas = {};
 
-const funcoes = {
-    NotasComparadas:(aluno)=>{
-        const notasAlunos = compararPorNotas[aluno.notasId];
-        const notasParaComparar = notasAlunos.find((o) => o.id === aluno.id);
-        const notasMedias = new compararPorNotas[aluno.notasTurmaId]
-        const notasComparadas = console.log("nota do aluno:", notasParaComparar + "nota media da turma:" , notasMedias);
-        notasComparadas.status = aluno.status;
-        axios.post('http://localhost:10000/eventos'),{
-            tipo: "NotasAtualizadas",
-            dados: {
-                notasmediaTurmaId: aluno.notasTurmaId,
-                Aluno:[
-                    {
-                        id: aluno.id,
-                        nome: aluno.nome,
-                        notasparciasId: aluno.notasId,
-                        status: aluno.status
-                    }
-                ]
-            }
+
+function NotasComparadas(aluno){
+    const notasAlunos = compararPorNotas[aluno.notasId];
+    const notasParaComparar = notasAlunos.find((o) => o.id === aluno.id);
+    const calculoDaMedia = new NotasAtualizadas();
+    notasComparadas.status = aluno.status;
+    axios.post('http://localhost:10000/eventos'),{
+        tipo: "NotasAtualizadas",
+        dados: {
+            Aluno:[
+                {
+                    id: aluno.id,
+                    nome: aluno.nome,
+                    notasparciasId: aluno.notasId,
+                    status: aluno.status
+                }
+            ]
         }
     }
 }
 
+app.get('/Comparar_Notas/:id',(req,res)=>{
+    const id = parseInt(req.params.id)
 
-app.get('/Notas/:id/Comparar_Notas',(req,res)=>{
-    res.send(compararPorNotas[req.params.id] || []);
-
+    aluno.Comparacao(id, res)
 });
+
 
 app.post('/eventos', (req, res)=>{
     try{

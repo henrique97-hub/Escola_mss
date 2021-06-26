@@ -11,6 +11,11 @@ const evento = req.body;
 axios.post('http://localhost:1700/eventos', evento);
 //envia o evento para o microsserviço de Comparar notas
 axios.post('http://localhost:5100/eventos', evento);
+// envia o evento pra o microsserviço de Consultar notas
+axios.post('http://localhost:4200/eventos', evento);
+// envia o evento pra o microsserviço de Notas
+axios.post('http://localhost:3000/eventos', evento);
+
 res.status(200).send({ msg: "ok" });
 });
 app.listen(10000, () => {
